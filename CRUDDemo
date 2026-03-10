@@ -1,0 +1,150 @@
+import java.util.HashMap;
+import java.util.Scanner;
+
+class Emp {
+    private int eNo;
+    private String ename;
+    private float sal;
+    public Emp(int eNo, String ename, float sal) {
+        this.eNo = eNo;
+        this.ename = ename;
+        this.sal = sal;
+    }
+
+    public int getEmpNo() {
+        return eNo;
+    }
+    public void setEmpNo(int eNo) {
+        this.eNo = eNo;
+    }
+
+    public String getEname() {
+        return ename;
+    }
+    public void setEname(String ename) {
+        this.ename = ename;
+    }
+
+    public float getSal() {
+        return sal;
+    }
+    public void setSal(float sal) {
+        this.sal = sal;
+    }
+
+    @Override
+    public String toString() {
+        return "Emp [empNo=" + eNo + ", ename=" + ename + ", sal=" + sal + "]";
+    }
+}
+
+public class CRUDDemo {
+    public static void main(String[] args) {
+        Scanner s1 = new Scanner(System.in);
+        HashMap<Integer, Emp> database = new HashMap<>();
+
+        int opt;
+        do {
+            System.out.println("\n--- Employee Management System ---");
+            System.out.println("1. Add");
+            System.out.println("2. Find");
+            System.out.println("3. Update");
+            System.out.println("4. Delete");
+            System.out.println("5. View All");
+            System.out.println("6. Exit");
+            System.out.print("Enter Option: ");
+            opt = s1.nextInt();
+            s1.nextLine(); 
+
+            switch (opt) {
+                case 1 -> { 
+                    System.out.print("Enter Employee No: ");
+                    int eNo = s1.nextInt();
+                    s1.nextLine();
+                    if (database.containsKey(eNo)) {
+                        System.out.println("Employee already exists with this ID!");
+                    } else {
+                        System.out.print("Enter Name: ");
+                        String ename = s1.nextLine();
+                        System.out.print("Enter Salary: ");
+                        float sal = s1.nextFloat();
+                        Emp e1 = new Emp(eNo, ename, sal);
+                        database.put(eNo, e1);
+                        System.out.println("Employee added successfully!");
+                    }
+                }
+                case 2 -> { 
+                    System.out.print("Enter Employee No to find: ");
+                    int eNo = s1.nextInt();
+                    Emp e1 = database.get(eNo);
+                    if (e1 != null) {
+                        System.out.println("Employee Found: " + e1);
+                    } else {
+                        System.out.println(" Employee Not Found!");
+                    }
+                }
+                case 3 -> { 
+                    System.out.print("Enter Employee No to update: ");
+                    int eNo = s1.nextInt();
+                    s1.nextLine();
+                    Emp e1 = database.get(eNo);
+                    if (e1 != null) {
+                        System.out.println("Employee Found: " + e1);
+                        System.out.println("What do you want to update?");
+                        System.out.println("1. Name");
+                        System.out.println("2. Salary");
+                        System.out.println("3. Both");
+                        int opt2 = s1.nextInt();
+                        s1.nextLine();
+                        switch (opt2) {
+                            case 1 -> {
+                                System.out.print("Enter new Name: ");
+                                e1.setEname(s1.nextLine());
+                                System.out.println(" Name updated!");
+                            }
+                            case 2 -> {
+                                System.out.print("Enter new Salary: ");
+                                e1.setSal(s1.nextFloat());
+                                System.out.println(" Salary updated!");
+                            }
+                            case 3 -> {
+                                System.out.print("Enter new Name: ");
+                                e1.setEname(s1.nextLine());
+                                System.out.print("Enter new Salary: ");
+                                e1.setSal(s1.nextFloat());
+                                System.out.println(" Name and Salary updated!");
+                            }
+                            default -> System.out.println(" Invalid Option!");
+                        }
+                    } else {
+                        System.out.println("Employee Not Found!");
+                    }
+                }
+                case 4 -> { 
+                    System.out.print("Enter Employee No to delete: ");
+                    int eNo = s1.nextInt();
+                    if (database.remove(eNo) != null) {
+                        System.out.println(" Employee deleted successfully!");
+                    } else {
+                        System.out.println(" Employee Not Found!");
+                    }
+                }
+                case 5 -> { 
+                    if (database.isEmpty()) {
+                        System.out.println("No Employees Found!");
+                    } else {
+                        System.out.println("\n--- Employee List ---");
+                        for (Emp emp : database.values()) {
+                            System.out.println(emp);
+                        }
+                    }
+                }
+                case 6 -> System.out.println(" Exiting... Goodbye.......!");
+                default -> System.out.println(" Invalid Option!");
+            }
+
+        } while (opt != 6);
+
+        s1.close();
+    }
+}
